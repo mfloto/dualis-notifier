@@ -84,7 +84,7 @@ def notify_server(name, hook_url):
 if __name__ == "__main__":
     creds = get_session(user, passwd)
     raw_html = get_grades(cookie=creds["cookie"], session=creds["session"])
-    table = extract_data_from_html(raw_html=raw_html)
+    table = extract_data_from_html(raw_html)
 
     file_exists = os.path.exists('grades.csv')
 
