@@ -73,9 +73,7 @@ if __name__ == "__main__":
         cookie=creds["cookie"], session=creds["session"], semester_id=semester_id)
     table = extract_data_from_html(raw_html)
 
-    file_exists = os.path.exists('grades.csv')
-
-    if file_exists:
+    if os.path.exists('grades.csv'):
         old_grades = pd.read_csv('grades.csv', index_col=0)
         res = table.compare(old_grades)
         index_list = res.index.to_list()
