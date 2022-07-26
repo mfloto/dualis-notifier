@@ -1,5 +1,8 @@
 # dualis-notifier
-Sends a discord-notification when ever new grades are available on ```dualis.dhbw.de```. This script runs periodically via a cronjob (e.g. every 15 minutes), saving the current grades as a .csv everytime they change.
+Sends a discord-notification when ever new grades are available on ```dualis.dhbw.de```. This script runs periodically via a cronjob (e.g. every 5 minutes), saving current grades as a .csv everytime they change. It is designed to be as simple and easy to understand as possible.
+
+# future plans
+In the future this script will be migrated to GCP (or similar): It will run as a Cloud Function triggered periodically by the Cloud Scheduler and stores its state using FireStore.
 
 ## about the semester_id
 - ```-N000000015088000``` -> WiSe 21/22
@@ -7,6 +10,6 @@ Sends a discord-notification when ever new grades are available on ```dualis.dhb
 - ```-N000000015118000``` -> SoSe 2023
 
 ## other constants
-- user: this is the username in the form of sXXXXXX
-- passwd: your password for dualis
-- hook_url: the webhook url from discord
+- user: username in the form of sXXXXXX
+- passwd: password for dualis
+- hook_url: webhook url from discord
