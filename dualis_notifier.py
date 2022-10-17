@@ -3,20 +3,15 @@ import requests
 import re
 import os
 
-# CONSTANTS
-user = ""
-passwd = ""
-semester_id = ""
-hook_url = ""
-user_agent = "Dualis Notifier"
+import config
 
 
-def get_session(user, passwd):
+def get_session(user, passwd) -> dict:
     url = "https://dualis.dhbw.de/scripts/mgrqispi.dll"
 
     payload = f'usrname={user}%40student.dhbw-mannheim.de&pass={passwd}&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cmenu_type%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000324&menu_type=classic&browser=&platform='
     headers = {
-        'User-Agent': user_agent,
+        'User-Agent': config.user_agent,
         'Content-Type': 'application/x-www-form-urlencoded',
     }
 
@@ -30,11 +25,11 @@ def get_session(user, passwd):
     }
 
 
-def get_grades(cookie, session, semester_id):
+def get_grades(cookie, session, semester_id) -> str:
     url = f"https://dualis.dhbw.de/scripts/mgrqispi.dll?APPNAME=CampusNet&PRGNAME=COURSERESULTS&ARGUMENTS={session},-N000307,{semester_id}"
 
     headers = {
-        'User-Agent': user_agent,
+        'User-Agent': config.user_agent,
         'Cookie': f'{cookie}; {cookie}',
     }
 
@@ -46,7 +41,7 @@ def get_grades(cookie, session, semester_id):
     return response.text
 
 
-def extract_data_from_html(raw_html):
+def extract_data_from_html(raw_html) -> pd.DataFrame:
     tables = pd.read_html(raw_html)
     df = tables[0]
     df.drop(df.columns[df.columns.str.contains(
@@ -54,7 +49,7 @@ def extract_data_from_html(raw_html):
     return df
 
 
-def notify_server(name, hook_url):
+def notify_server(name, hook_url) -> None:
     data = {
         "username": "DUALIS"
     }
@@ -68,9 +63,9 @@ def notify_server(name, hook_url):
 
 
 if __name__ == "__main__":
-    creds = get_session(user, passwd)
+    creds = get_session(config.user, config.passwd)
     raw_html = get_grades(
-        cookie=creds["cookie"], session=creds["session"], semester_id=semester_id)
+        cookie=creds["cookie"], session=creds["session"], semester_id=config.semester_id)
     table = extract_data_from_html(raw_html)
 
     if os.path.exists('grades.csv'):
@@ -87,7 +82,7 @@ if __name__ == "__main__":
             if name == "Semester-GPA":
                 continue
             print(f"I: New grades for {name}")
-            notify_server(name, hook_url)
+            notify_server(name, config.hook_url)
 
         table.to_csv("grades.csv")
     else:
