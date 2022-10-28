@@ -55,8 +55,9 @@ def notify_server(name, hook_url) -> None:
     }
     data["embeds"] = [
         {
-            "description": f"Die Noten für {name} wurden veröffentlicht!",
-            "title": name
+            "description": f"Die Noten für {name} wurden veröffentlicht! \n Gehe zu https://dualis.dhbw.de/ um deine Note einzusehen",
+            "title": name,
+            "url": "https://dualis.dhbw.de"
         }
     ]
     requests.post(hook_url, json=data)
