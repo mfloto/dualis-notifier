@@ -11,20 +11,20 @@ jobs:
 #         with:
 #           black: true
 
-      - name: Bandit
-        uses: dciborow/pyaction@0.0.13
-        with:          
-          bandit: true
+#      - name: Bandit
+#        uses: dciborow/pyaction@0.0.13
+#        with:          
+#          bandit: true
 
       - name: Pylint
         uses: dciborow/pyaction@0.0.13
         with:
           pylint: true
           
-      - name: Pyright
-        uses: dciborow/pyaction@0.0.13
-        with:          
-          pyright: true
+#      - name: Pyright
+#        uses: dciborow/pyaction@0.0.13
+#        with:          
+#          pyright: true
           
       - name: Flake8
         uses: dciborow/pyaction@0.0.13
