@@ -14,6 +14,8 @@ At the moment the script runs on a Standard B1s Azure-Instance.
 - ```-N000000015098000``` -> SoSe 2022
 - ```-N000000015108000``` -> WiSe 22/23
 - ```-N000000015118000``` -> SoSe 2023
+- ```-N000000015128000``` -> WiSe 23/24
+- ```-N000000015138000``` -> SoSe 2024
 
 ## other constants in config.py
 - user: username in the form of sXXXXXX
