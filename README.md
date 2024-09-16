@@ -11,9 +11,9 @@ docker run -e DUALIS_USER="your_username" -e DUALIS_PASSWD="your_password" -e SE
 ## configuration
 This is done using environment variables passed through docker.
 
-- ```DUALIS_USER``` -> your dualis username
+- ```DUALIS_USER``` -> your dualis username in the form of `sXXXXXX`
 - ```DUALIS_PASSWD``` -> your dualis password
-- ```SEMESTER_ID``` -> the semester_id of the semester you want to get the grades from
+- ```SEMESTER_ID``` -> the semester_id of the semester you want to get the grades from (use the list below)
 - ```DISCORD_WEBHOOK``` -> the webhook url to send the notifications to
 - ```AGENT_NAME``` -> user agent string included in the request (defaults to "Dualis Notifier")
 
