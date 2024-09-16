@@ -5,7 +5,7 @@ Sends a discord-notification when ever new grades are available on ```dualis.dhb
 
 ## usage
 ```bash
-docker run -e DUALIS_USER="your_username" -e DUALIS_PASSWD="your_password" -e SEMESTER_ID="your_semester" -e DISCORD_WEBHOOK="your_webhook" mfloto/dualis-notifier:latest
+docker run -d -e DUALIS_USER="your_username" -e DUALIS_PASSWD="your_password" -e SEMESTER_ID="your_semester" -e DISCORD_WEBHOOK="your_webhook" mfloto/dualis-notifier:latest
 ```
 
 ## configuration
