@@ -55,7 +55,6 @@ def extract_data_from_html(raw_html) -> pd.DataFrame:
 
 
 def notify_server(name, hook_url) -> None:
-    print("Server notification sim!")
     data = {"username": "DUALIS"}
     data["embeds"] = [
         {
