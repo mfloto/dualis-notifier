@@ -3,16 +3,18 @@ import requests
 import re
 import os
 
-import config
+from config import load_config
+
+config = load_config()
 
 
 def get_session(user, passwd) -> dict:
     url = "https://dualis.dhbw.de/scripts/mgrqispi.dll"
 
-    payload = f'usrname={user}%40student.dhbw-mannheim.de&pass={passwd}&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cmenu_type%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000324&menu_type=classic&browser=&platform='
+    payload = f"usrname={user}%40student.dhbw-mannheim.de&pass={passwd}&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cmenu_type%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000324&menu_type=classic&browser=&platform="
     headers = {
-        'User-Agent': config.user_agent,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "User-Agent": config["user_agent"],
+        "Content-Type": "application/x-www-form-urlencoded",
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -21,7 +23,9 @@ def get_session(user, passwd) -> dict:
 
     return {
         "cookie": response.headers["Set-Cookie"].split(";")[0].replace(" ", ""),
-        "session": re.search(regex_pattern_session, response.headers["REFRESH"]).group(1)
+        "session": re.search(regex_pattern_session, response.headers["REFRESH"]).group(
+            1
+        ),
     }
 
 
@@ -29,8 +33,8 @@ def get_grades(cookie, session, semester_id) -> str:
     url = f"https://dualis.dhbw.de/scripts/mgrqispi.dll?APPNAME=CampusNet&PRGNAME=COURSERESULTS&ARGUMENTS={session},-N000307,{semester_id}"
 
     headers = {
-        'User-Agent': config.user_agent,
-        'Cookie': f'{cookie}; {cookie}',
+        "User-Agent": config["user_agent"],
+        "Cookie": f"{cookie}; {cookie}",
     }
 
     response = requests.get(url, headers=headers)
@@ -44,13 +48,15 @@ def get_grades(cookie, session, semester_id) -> str:
 def extract_data_from_html(raw_html) -> pd.DataFrame:
     tables = pd.read_html(raw_html)
     df = tables[0]
-    df.drop(df.columns[df.columns.str.contains(
-        'unnamed', case=False)], axis=1, inplace=True)
+    df.drop(
+        df.columns[df.columns.str.contains("unnamed", case=False)], axis=1, inplace=True
+    )
     return df
 
 
 def notify_server(name, hook_url) -> None:
-    data = {
+    print("Server notification sim!")
+    """data = {
         "username": "DUALIS"
     }
     data["embeds"] = [
@@ -60,17 +66,20 @@ def notify_server(name, hook_url) -> None:
             "url": "https://dualis.dhbw.de"
         }
     ]
-    requests.post(hook_url, json=data)
+    requests.post(hook_url, json=data)"""
 
 
 if __name__ == "__main__":
-    creds = get_session(config.user, config.passwd)
+    creds = get_session(config["user"], config["passwd"])
     raw_html = get_grades(
-        cookie=creds["cookie"], session=creds["session"], semester_id=config.semester_id)
+        cookie=creds["cookie"],
+        session=creds["session"],
+        semester_id=config["semester_id"],
+    )
     table = extract_data_from_html(raw_html)
 
-    if os.path.exists('grades.csv'):
-        old_grades = pd.read_csv('grades.csv', index_col=0)
+    if os.path.exists("grades.csv"):
+        old_grades = pd.read_csv("grades.csv", index_col=0)
         res = table.compare(old_grades)
         index_list = res.index.to_list()
 
@@ -83,7 +92,7 @@ if __name__ == "__main__":
             if name == "Semester-GPA":
                 continue
             print(f"I: New grades for {name}")
-            notify_server(name, config.hook_url)
+            notify_server(name, config["hook_url"])
 
         table.to_csv("grades.csv")
     else:
