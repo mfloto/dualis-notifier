@@ -9,5 +9,5 @@ RUN pip install --no-cache-dir --compile -r requirements.txt
 RUN apt update
 RUN apt install cron -y
 
-RUN echo "* * * * * /usr/local/bin/python3 /notifier/dualis_notifier.py >> /var/log/cron.log 2>&1" | crontab -
+RUN echo "*/15 * * * * /usr/local/bin/python3 /notifier/dualis_notifier.py >> /var/log/cron.log 2>&1" | crontab -
 CMD ["/notifier/entrypoint.sh"]
