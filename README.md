@@ -2,10 +2,11 @@
 
 # dualis-notifier
 Sends a discord-notification when ever new grades are available on ```dualis.dhbw.de``` (module grades only). This script runs periodically via a cronjob (e.g. every 15 minutes), saving current grades as a .csv everytime they change. It is designed to be as simple and easy to understand as possible.
+It can be run directly or through the provided docker image (see usage below), which executes the script every 15 minutes.
 
 ## usage
 ```bash
-docker run -e DUALIS_USER="your_username" -e DUALIS_PASSWD="your_password" -e SEMESTER_ID="your_semester" -e DISCORD_WEBHOOK="your_webhook" mfloto/dualis-notifier:latest
+docker run -d -e DUALIS_USER="your_username" -e DUALIS_PASSWD="your_password" -e SEMESTER_ID="your_semester" -e DISCORD_WEBHOOK="your_webhook" mfloto/dualis-notifier:latest
 ```
 
 ## configuration
