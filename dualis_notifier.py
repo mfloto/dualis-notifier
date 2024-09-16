@@ -56,17 +56,15 @@ def extract_data_from_html(raw_html) -> pd.DataFrame:
 
 def notify_server(name, hook_url) -> None:
     print("Server notification sim!")
-    """data = {
-        "username": "DUALIS"
-    }
+    data = {"username": "DUALIS"}
     data["embeds"] = [
         {
             "description": f"Die Noten für {name} wurden veröffentlicht! \n Gehe zu https://dualis.dhbw.de/ um deine Note einzusehen",
             "title": name,
-            "url": "https://dualis.dhbw.de"
+            "url": "https://dualis.dhbw.de",
         }
     ]
-    requests.post(hook_url, json=data)"""
+    requests.post(hook_url, json=data)
 
 
 if __name__ == "__main__":
